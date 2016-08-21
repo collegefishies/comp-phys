@@ -1,6 +1,11 @@
 # comp-phys
-A set of C++ libraries for doing numerical physics!!!
-
+A set of C++ libraries for doing numerical physics!!! It includes
+a vector class, and tenth order Runge-Kutta method with adaptive step and
+error checking.
+1. [vec.h]vec.h
+  i. [vector]eqm::vector
+  ii. [nvector]eqm::nvector
+2. [rk10.h]rk10.h
 #Things to note.
 Everything is in the eqm namespace, so to access everything you either need
 to add `eqm::` or `using namespace eqm`
@@ -92,8 +97,8 @@ vector v(-1,-1,0);
 vector u,v;
 nvector r;	//note that it's of zero dimension (for now).
 
-r = r << x << v; // ???
-r >> u >> v;
+r = r << x << v; // r is unchanged until we do assignment
+r >> u >> v;	// note that r is still 6 dimensional an unchanged.
 
 cout << r << endl;
 cout << "u is: " << u << endl;
@@ -106,3 +111,17 @@ This prints out
 u is: 1 2 3
 v is: -1 -1 0
 ```
+
+Some interesting things about `<<` and `>>`, if we instead did
+```c++
+r >> u;
+r >> v;
+```
+Both `u` and `v` would be the same. If we wanted the behavior of v being the rest of r such as in
+`r >> u >> v;` then we could do
+```c++
+r = r >> u;
+r = r >> v;
+```
+As would be useful in a loop. Also note that `>>` pulls the first three elements out of `r`. So you
+can remember the order easily as you do this.
