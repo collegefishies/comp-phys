@@ -2,11 +2,11 @@
 A set of C++ libraries for doing numerical physics!!! It includes
 a vector class, and tenth order Runge-Kutta method with adaptive step and
 error checking.
-- [Things to note.](#)
-- [vec.h](#)
-	- [vector](## vector)
-	- [nvector](#)
-		- [The Cool Extra Thing about nvector](#)
+- [Things to note.](#things-to-note)
+- [vec.h](#vech)
+	- [vector](#vector)
+	- [nvector](#nvector)
+		- [The Cool Extra Thing about nvector](#the-cool-extra-thing-about-nvector)
 
 #Things to note.
 Everything is in the eqm namespace, so to access everything you either need
