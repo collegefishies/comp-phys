@@ -11,7 +11,7 @@ https://web.archive.org/web/20160821182327/http://sce.uhcl.edu/feagin/courses/rk
 */
 
 //the constructor to rk10.
-eqm::rk10::rk10(hamilton G,nvector r0){
+eqm::rk10::rk10(hamilton G,nvector r0,bool wantbackup){
 
 	errcounts = 15;
 	alpha = 2;
@@ -24,7 +24,7 @@ eqm::rk10::rk10(hamilton G,nvector r0){
 
 	//recover from crash if there was one
 	std::ifstream isbackup("rk10.bak");
-	if(isbackup){
+	if(isbackup && wantbackup){
 		std::cerr <<"Found rk10.bak! Backing up!" << std::endl;
 		isbackup >> t;
 		isbackup >> dt;

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
-#include <cmath>
+// #include <cmath>
 #include "vec.h"
 
 //this preprocessor directive checks to see whether our parent source file
@@ -92,7 +92,7 @@ namespace eqm{
 	public:
 		//constructor! this says whenever we define a member of the class rk10, we need to 
 		//pass two arguments, a function address, hamilton G, and a pointer to r0.
-		rk10(hamilton G, nvector r0);
+		rk10(hamilton G, nvector r0, bool backup=true);
 		rk10(const rk10&){ std::cout << "Error! You shouldn't be calling the rk10 copy constructor.\n";
 			std::cout << "If you really believe you should. Change rk10.h. Quitting!" << std::endl;
 			exit(1);
@@ -104,7 +104,20 @@ namespace eqm{
 		T time(){return t;};
 		T time(T x){t=x; return t;};
 		T timestep(){return dt;};
-		T timestep(T x){dt = abs(x); if(dt == 0){dt = 0.01;}; return dt;};
+		T timestep(T x){
+			if(x < 0){
+				x = -x;
+			}
+			if(x < 1e-200)
+			{
+				dt = 0.01; 
+				std::cerr << "dt == " << abs(x) << std::endl;
+				std::cerr << "Warning! rk10.timestep() detected dt == 0! Setting dt = 0.01" << std::endl;
+			} else {
+				dt = x;
+			}
+			return dt;
+		};
 
 		T step();   	//returns the error of the ultimate calculation
 		T step(T t);	//returns the error of the ultimate calculation

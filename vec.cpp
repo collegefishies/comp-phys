@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <cmath>
 #include "vec.h"
 
 
@@ -162,7 +163,7 @@ eqm::T eqm::vector::mag() const{
 }
 
 eqm::vector eqm::vector::uv() const{
-	return (*this)/(this->mag());
+	return (*this)/abs(this->mag());
 }
 
 //-----------eqm::nvector-------------------

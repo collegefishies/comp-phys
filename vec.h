@@ -1,5 +1,5 @@
 #include <iostream>
-#include <math.h>
+#include <cmath>
 #include <stdlib.h>  //has exit
 
 #ifndef _VEC_H
