@@ -8,6 +8,15 @@ error checking, and calculation back up!!!
 	- [nvector](#nvector)
 		- [The Cool Extra Thing about nvector](#the-cool-extra-thing-about-nvector)
 - [rk10.h](#rk10h)
+	- [Checking out the source code](#checking-out-the-source-code)
+	- [Using rk10 without backup](#using-rk10-without-backup)
+		- [How to use F](#how-to-use-f)
+		- [How to initialize the rk10 class](#how-to-initialize-the-rk10-class)
+			- [Changing Simulation Parameters](#changing-simulation-parameters)
+			- [Running rk10!](#running-rk10)
+	- [Backup](#backup)
+	- [Changing rk10](#changing-rk10)
+		**(made with doctoc.herokuapp.com)**
 
 #Things to note.
 Everything is in the eqm namespace, so to access everything you either need
@@ -239,7 +248,7 @@ nvector R(){return r;};             	// This returns the configuration space vec
 ```
 
 #### Running rk10!
-You can find a sample rk10 simulation in `galaxieswith syrup.cpp`.
+You can find a sample rk10 simulation in `galaxieswithsyrup.cpp`.
 You can use the makefile to run it and plot it, provided you have `gnuplot.`
 
  If you don't want hints though and just want
