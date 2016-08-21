@@ -7,7 +7,7 @@ to add `eqm::` or `using namespace eqm`
 
 # vec.h
 Contains two classes, `eqm::nvector` and `eqm::vector`.
-
+## vector
 For `eqm::vector`, all the arithmetic operations are supported.
 ```c++
 eqm::vector u;       	//declare a vector with no argument u == vector(0,0,0);
@@ -38,4 +38,71 @@ v[2] = 3;
 
 //and print it out to the terminal/file
 cout << v << endl; //is defined!!
+```
+## nvector
+`nvector` extends the functionality of `vector` to ndimensions! Plus a little extra.
+This extra, is the ability to concatenate `vector`s to an `nvector` as well as rip it 
+apart again.
+It only has a vector space structure. That is only the operations in the following block
+are defined.
+```c++
+eqm::nvector u(17);	//a 17 dimensional vector
+eqm::nvector v(17);	//a 17 dimensional vector
+eqm::nvector w(17);	//a 17 dimensional vector
+double a,b;
+v[13] = 3;
+w[13] = .1L;
+
+u = a*(-v) - (w/b) + a;
+```
+
+Zero dimensional vectors are also possible!! (This *is* useful btw cus I've got **more** features!!)
+For `eqm::nvector` the following operations are 
+
+```c++
+//All possible arithmetical 3D operations.
+u = a*v;	//multiplication by a scalar
+u = v*a;	
+u = v/a;	// division by a scalar!!
+u = v+w;	//addition and subtraction
+u = v-w;
+u = -v; //negation
+
+//*********************
+//nvector specifics!!
+//*********************
+
+u.dim() //returns the dimension of u!!!
+u[i]    //also works!!
+
+// u,v are of different dimension, the program quits!!! (and gives an error message.)
+// Hooray error checking!!
+```
+
+### The Cool Extra Thing about `nvector`
+Suppose you have an arbitrary number of vectors, that you want to pass to a function,
+and still preserve the vector space structure, you can with `nvector`s!!!
+
+```c++
+using namespace eqm;
+using namespace std;
+vector x(1,2,3);
+vector v(-1,-1,0);
+
+vector u,v;
+nvector r;	//note that it's of zero dimension (for now).
+
+r = r << x << v; // ???
+r >> u >> v;
+
+cout << r << endl;
+cout << "u is: " << u << endl;
+cout << "v is: " << v << endl;
+```
+
+This prints out
+```
+1 2 3 -1 -1 0
+u is: 1 2 3
+v is: -1 -1 0
 ```
