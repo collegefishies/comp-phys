@@ -7,6 +7,7 @@ error checking.
 	- [vector](#)
 	- [nvector](#)
 		- [The Cool Extra Thing about nvector](#)
+
 #Things to note.
 Everything is in the eqm namespace, so to access everything you either need
 to add `eqm::` or `using namespace eqm`
