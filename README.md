@@ -7,6 +7,7 @@ error checking.
 	- [vector](#vector)
 	- [nvector](#nvector)
 		- [The Cool Extra Thing about nvector](#the-cool-extra-thing-about-nvector)
+- [rk10.h](#rk10h)
 
 #Things to note.
 Everything is in the eqm namespace, so to access everything you either need
@@ -126,6 +127,32 @@ r = r >> u;
 r = r >> v;
 ```
 As would be useful in a loop. Also note that `>>` pulls the first three elements out of `r`. So you
-can remember the order easily as you do this.
+if you remember the order in which you put vectors, you know which way they'll come out, i.e, 
+```c++
+r = r << x << y << z;
+r = r >> x >> y >> z;
+```
+does (in effect) nothing.
 
 # rk10.h
+
+Oooo! This is a cool puppy, it makes implementing a runge-kutta method painless!
+It also has backup functionality!! So if your code takes a dip, you can pick up from
+the same spot!!
+
+## Checking out the source code
+
+For those who are interested in how rk10 works, I kind of started commenting it heavily,
+it isn't completely done. But there is stuff in there.
+
+## Using rk10
+To define a system that you want to integrate, you need to define first and foremost,
+the first order differential equations that define it, and the starting point.
+
+
+## Backup
+
+## Changing rk10
+You can make it a twentieth order method if you want! All you need to do is change
+the matricies `ak`, `ck`, and `bkj` and the appropriate dimensions all throughout the code,
+as well as the calculation for the error nvector which will then be different.
