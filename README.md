@@ -13,6 +13,10 @@ error checking, and calculation back up!!!
 Everything is in the eqm namespace, so to access everything you either need
 to add `eqm::` or `using namespace eqm`
 
+If you're a primo-coder who doesn't want to read through my verbosity, just check out
+`vec.h` and `rk10.h` for almost everything you need to know. Be warned that `rk10.h`
+is verbose too.
+
 # vec.h
 Contains two classes, `eqm::nvector` and `eqm::vector`.
 ## vector
@@ -48,7 +52,7 @@ v[2] = 3;
 cout << v << endl; //is defined!!
 ```
 ## nvector
-`nvector` extends the functionality of `vector` to ndimensions! Plus a little extra.
+`nvector` extends the functionality of `vector` to n-dimensions! Plus a little extra.
 This extra, is the ability to concatenate `vector`s to an `nvector` as well as rip it 
 apart again.
 It only has a vector space structure. That is only the operations in the following block
@@ -101,7 +105,7 @@ vector u,v;
 nvector r;	//note that it's of zero dimension (for now).
 
 r = r << x << v; // r is unchanged until we do assignment
-r >> u >> v;	// note that r is still 6 dimensional an unchanged.
+r >> u >> v;	// note that r is still 6 dimensional and unchanged.
 
 cout << r << endl;
 cout << "u is: " << u << endl;
@@ -176,7 +180,7 @@ In our function definition just before, or after `main`
 ```c++
 using namespace eqm;
 
-nvector galaxy(nvector r, long double t);
+nvector galaxy(nvector r, long double t){
 	nvector drdt;      	//here's the vector that returns the derivative of r
 	vector r1,r2,v1,v2;	//we break apart r for easier calculations
 	vector F1,F2;
@@ -184,13 +188,14 @@ nvector galaxy(nvector r, long double t);
 
 	F1 = -G*M1*M2/pow((r1-r2).mag(),2)*(r2-r1).uv() - b*v1;          	//linear drag
 	F2 = -G*M1*M2/pow((r1-r2)*(r1-r2))*(r1-r2).uv() - bb*v1.mag()*v1;	//quadratic drag
-	//checkout how easy it is to comput our forces! Easy to error check and easy to write.
+	//checkout how easy it is to compute our forces! Easy to error check and easy to write.
 
 	//Now just return drdt;
 	drdt = drdt << v1 << v2 << F1/M1 << F2/M2;
 	// and do return drdt;
 	//or skipping the assignment, we can just do
 	return drdt << v1 << v2 << F1/M1 << F2/M2;
+}
 ```
 
 Note that this was relatively simple to write and can be easily extended to N particles!
@@ -198,7 +203,56 @@ Finite element analysis for a 305 project anyone??
 
 ### How to initialize the rk10 class
 
+To initialize the rk10 class we just need to have our initial position vector ready,
+and our derivatives function ready. Using what we have from the previous section,
 
+```c++
+
+int main(){
+	eqm::rk10 simulation(galaxy, r);
+// ...
+```
+Note that by definition of rk10 constructor, we should really pass `&galaxy`: the *address* 
+to the galaxy function, but g++ doesn't seem to have problems dealing with ambiguity
+between functions and pointers to functions.
+
+Now, **by default**, t = 0, and dt = 0.01. If you don't want that, there are member functions
+of rk10, that let you change that.
+
+#### Changing Simulation Parameters
+Here are useful rk10 member functions
+```c++
+void seterr(T minerr, T maxerr);      	//sets error bounds, so you're accurate enough, but not too accurate.
+void setalpha(T x){alpha = x;};       	//Everytime you're not accurate enough rk10, changes dt by a factor 
+                                      	//alpha. You can set alpha with this function.
+void settrials(int x){errcounts = x;};	//Sometimes your simulation is hopeless and for no dt will your
+                                      	//simulation ever have the desired error. This is the max attempts
+                                      	//that the simulation will try decreasing dt by alpha. For a given
+                                      	//step calculation.
+
+T time(){return t;};        	//This returns the time of the simulation
+T time(T x){t=x; return t;};	//This returns the time of the simulation as well as sets it.
+T timestep(){return dt;};  
+T timestep(T x){dt = x; return dt;};	// You can set and read dt with this function.
+nvector R(){return r;};             	// This returns the configuration space vector that describes
+                                    	// your system.
+```
+
+#### Running rk10!
+You can find a sample rk10 simulation in `galaxieswith syrup.cpp`.
+You can use the makefile to run it and plot it, provided you have `gnuplot.`
+
+ If you don't want hints though and just want
+to make your own, the function that actually proceeds with the integration is 
+```c++
+step([t]);
+```
+It belongs to rk10, and it simulates until time `t`, so if you don't need to record the integration details 
+in between 0 and 10 seconds, you can ignore them if you wish. If you call it with no argument, it integrates
+for one step. 
+
+To record, the position after it is finished calculating you can call `R()` which returns
+the current position `nvector`. 
 ## Backup
 
 ## Changing rk10
@@ -206,7 +260,7 @@ You can make it a twentieth order method (and they *do* exist) if you want! All 
 the matricies `ak`, `ck`, and `bkj` and the appropriate dimensions all throughout the code,
 as well as the calculation for the error nvector which will then be different.
 
-The key to making implementing runge-kutta painless, is remember that at the heart of RK methods
+The key to making implementing Runge-Kutta painless, is remember that at the heart of RK methods
 is the incremental guess of what our approximation derivative is is, if y' = f(t,x) is our differential
 equation, we make first guess `y' ~ k[0] = f(t,x)`, then we make another guess based on our 
 last guess, `k[1] = f(t + a*dt, x + dt*b*k[0])` and then make yet another guess based on all our previous
