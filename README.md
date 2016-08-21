@@ -1,7 +1,7 @@
 # comp-phys
 A set of C++ libraries for doing numerical physics!!! It includes
 a vector class, and tenth order Runge-Kutta method with adaptive step and
-error checking.
+error checking, and calculation back up!!!
 - [Things to note.](#things-to-note)
 - [vec.h](#vech)
 	- [vector](#vector)
@@ -145,14 +145,43 @@ the same spot!!
 For those who are interested in how rk10 works, I kind of started commenting it heavily,
 it isn't completely done. But there is stuff in there.
 
-## Using rk10
+## Using rk10 without backup
 To define a system that you want to integrate, you need to define first and foremost,
 the first order differential equations that define it, and the starting point.
+The format of these are
+```c++
+nvector F(nvector r, long double t);	//the function that calculates our first derivatives
+nvector r;                          	//defines all our initial positions.
+```
+If you want to see why I did it this way, we can begin to see the full generality of F
+by considering a two particle system with quadratic drag. Let's suppose they're like
+planets and they orbit around each other with a 1/r^2 force between them. We can define they're initial
+position like so
+```c++
+using namespace eqm;
+
+//some initial positions.
+vector r1( 1,0,0);
+vector r2(-1,0,0);
+vector v1(0,1,0);
+vector v2(0,-1,0);
+
+nvector r;
+r = r << r1 << r2 << v1 << v2; //remember the order.
+```
+
 
 
 ## Backup
 
 ## Changing rk10
-You can make it a twentieth order method if you want! All you need to do is change
+You can make it a twentieth order method (and they *do* exist) if you want! All you need to do is change
 the matricies `ak`, `ck`, and `bkj` and the appropriate dimensions all throughout the code,
 as well as the calculation for the error nvector which will then be different.
+
+The key to making implementing runge-kutta painless, is remember that at the heart of RK methods
+is the incremental guess of what our approximation derivative is is, if y' = f(t,x) is our differential
+equation, we make first guess `y' ~ k[0] = f(t,x)`, then we make another guess based on our 
+last guess, `k[1] = f(t + a*dt, x + dt*b*k[0])` and then make yet another guess based on all our previous
+guesses yet again (usually in some new way. Then after that, we choose our ultimate final guess to be some
+ weighted sum of our previous guesses. 
