@@ -16,7 +16,7 @@ eqm::vector w(2,1);  	//w == vector(2,1,0);
 eqm::vector v(3,1,2);	//v == vector(3,1,2);
 
 double a,b;
-//All possible 3D operations.
+//All possible arithmetical 3D operations.
 u = a*v;	//multiplication by a scalar
 u = v*a;	
 u = v/a;	// division by a scalar!!
@@ -30,3 +30,12 @@ a = u*(v^w);	//the scalar triple product! Y(*o*)Y~~~~
 
 a = v.mag();	//magnitude
 u = v.uv(); 	//and unit vector.
+
+//You can also define certain elements
+v[0] = 1;
+v[1] = 2;
+v[2] = 3;
+
+//and print it out to the terminal/file
+cout << v << endl; //is defined!!
+```
