@@ -182,7 +182,8 @@ eqm::nvector eqm::nvector::operator=(const eqm::nvector& x){
 eqm::nvector eqm::nvector::operator+(const eqm::nvector& x) const{	//addition
 
 	if (x.dimension != this->dimension){
-		std::cout << "Incorrect dimension: Addition: Quitting!\n";
+		std::cerr << "Incorrect dimension: Addition: Quitting!\n";
+		std::cerr << "Dimensions: " << this->dimension << " vs. " << x.dimension << std::endl;
 		exit(1);
 	}
 
@@ -199,7 +200,8 @@ eqm::nvector eqm::nvector::operator+(const eqm::nvector& x) const{	//addition
 eqm::nvector eqm::nvector::operator-(const eqm::nvector& x) const{	//subtraction
 
 	if (x.dimension != this->dimension){
-		std::cout << "Incorrect dimension: Addition: Quitting!\n";
+		std::cerr << "Incorrect dimension: Subtraction: Quitting!\n";
+		std::cerr << "Dimensions: " << this->dimension << " vs. " << x.dimension << std::endl;
 		exit(1);
 	}
 
@@ -292,7 +294,7 @@ eqm::T& eqm::nvector::operator[](int index){
 		std::cout << "Error: Accessing element beyond dimension!!\n";
 		std::cout << "Dimension is " << this->dimension << std::endl;
 		std::cout << "index passed was " << index << std::endl;
-		std::cout << "Quiting!!" << std::endl;
+		std::cout << "Quitting!!" << std::endl;
 		exit(1);
 	}
 }
@@ -304,7 +306,7 @@ eqm::T eqm::nvector::operator[](int index) const{
 		std::cout << "Error: Accessing element beyond dimension!!\n";
 		std::cout << "Dimension is " << this->dimension << std::endl;
 		std::cout << "index passed was " << index << std::endl;
-		std::cout << "Quiting!!" << std::endl;
+		std::cout << "Quitting!!" << std::endl;
 		exit(1);
 	}
 }

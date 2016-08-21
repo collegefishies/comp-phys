@@ -5,24 +5,25 @@
 #include <fstream>
 #include <iostream>
 
+#define SIMTIME 100
+
 using namespace std;
 using namespace eqm;
 
-#define SIMTIME 100
 
 //I defined long double as T in rk10.h and vec.h.
 nvector galaxy(nvector r, T t);	//function prototype for declaration.
 
-T G,M1,M2,b,bb;
-
-G = M1 = M2 = 1;
-b = 0.2;
-bb = b*b;
+T G = 1;
+T M1 = 1;
+T M2 = 1;
+T b  = 0.2;
+T bb = b*b;
 
 int main(int argc, char const *argv[])
 {
 	//open up our file to write to
-	fstream file('syrupgalaxies.dat', fstream::out | fstream::trunc);
+	fstream file("syrupgalaxies.dat", fstream::out | fstream::trunc);
 
 	//some initial positions.
 	vector r1( 1,0,0);
@@ -40,12 +41,11 @@ int main(int argc, char const *argv[])
 	simulation.seterr(0,1e-6);	//to within one micron plz.
 
 	while( simulation.time() < SIMTIME ){
-		simulation.step( simulation.time() + 0.1 ); //That way I record numbers at a decently coarse scale.
+		simulation.step(simulation.time() + 1); //That way I record numbers at a decently coarse scale.
 
-		r = simulation.R();
-		r >> r1 >> r2;
+		simulation.R() >> r1 >> r2;
 
-		file << t << ' ' << vector(r1[0], r1[1],r2[0]) << ' ' << r2[1] << endl;
+		file << simulation.time() << ' ' << vector(r1[0], r1[1],r2[0]) << ' ' << r2[1] << endl;
 	}
 	return 0;
 }
@@ -56,12 +56,12 @@ nvector galaxy(nvector r, T t){
 	vector F1,F2;
 	r >> r1 >> r2 >> v1 >> v2;
 
-	F1 = -G*M1*M2/pow((r1-r2).mag(),2)*(r2-r1).uv() - b*v1;          	//linear drag
-	F2 = -G*M1*M2/pow((r1-r2)*(r1-r2))*(r1-r2).uv() - bb*v1.mag()*v1;	//quadratic drag
+	F1 = -G*M1*M2/pow((r1-r2).mag(),2)*(r2-r1).uv() - b*v1;       	//linear drag
+	F2 = -G*M1*M2/((r1-r2)*(r1-r2))*(r1-r2).uv() - bb*v1.mag()*v1;	//quadratic drag
 	//checkout how easy it is to compute our forces! Easy to error check and easy to write.
 
 	//Now just return drdt;
-	drdt = drdt << v1 << v2 << F1/M1 << F2/M2;
+	// drdt = drdt << v1 << v2 << F1/M1 << F2/M2;
 	// and do return drdt;
 	//or skipping the assignment, we can just do
 	return drdt << v1 << v2 << F1/M1 << F2/M2;

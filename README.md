@@ -16,6 +16,7 @@ error checking, and calculation back up!!!
 			- [Running rk10!](#running-rk10)
 	- [Backup](#backup)
 	- [Changing rk10](#changing-rk10)
+
 		**(made with doctoc.herokuapp.com)**
 
 #Things to note.
@@ -195,8 +196,8 @@ nvector galaxy(nvector r, long double t){
 	vector F1,F2;
 	r >> r1 >> r2 >> v1 >> v2;
 
-	F1 = -G*M1*M2/pow((r1-r2).mag(),2)*(r2-r1).uv() - b*v1;          	//linear drag
-	F2 = -G*M1*M2/pow((r1-r2)*(r1-r2))*(r1-r2).uv() - bb*v1.mag()*v1;	//quadratic drag
+	F1 = -G*M1*M2/pow((r1-r2).mag(),2)*(r2-r1).uv() - b*v1;       	//linear drag
+	F2 = -G*M1*M2/((r1-r2)*(r1-r2))*(r1-r2).uv() - bb*v1.mag()*v1;	//quadratic drag
 	//checkout how easy it is to compute our forces! Easy to error check and easy to write.
 
 	//Now just return drdt;

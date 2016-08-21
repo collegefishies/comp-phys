@@ -1,6 +1,7 @@
 #include <iomanip>
 #include <fstream>
 #include <cstdio>
+#include <cmath>
 #include "rk10.h"
 /*
 Made using the paper found here.
@@ -92,7 +93,7 @@ eqm::T eqm::rk10::step(eqm::T tf){
 
 		for (int i = 0; i < error.dim(); ++i)
 		{
-			scalarerr = scalarerr > error[i] ? scalarerr : error[i];
+			scalarerr = scalarerr > abs(error[i]) ? scalarerr : abs(error[i]);
 		}
 
 		if(scalarerr > errmax && errs != errcounts){
