@@ -4,7 +4,7 @@ a vector class, and tenth order Runge-Kutta method with adaptive step and
 error checking.
 - [Things to note.](#)
 - [vec.h](#)
-	- [vector](#)
+	- [vector](## vector)
 	- [nvector](#)
 		- [The Cool Extra Thing about nvector](#)
 
