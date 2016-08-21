@@ -153,6 +153,8 @@ The format of these are
 nvector F(nvector r, long double t);	//the function that calculates our first derivatives
 nvector r;                          	//defines all our initial positions.
 ```
+
+### How to use F
 If you want to see why I did it this way, we can begin to see the full generality of F
 by considering a two particle system with quadratic drag. Let's suppose they're like
 planets and they orbit around each other with a 1/r^2 force between them. We can define they're initial
@@ -170,6 +172,31 @@ nvector r;
 r = r << r1 << r2 << v1 << v2; //remember the order.
 ```
 
+In our function definition just before, or after `main`
+```c++
+using namespace eqm;
+
+nvector galaxy(nvector r, long double t);
+	nvector drdt;      	//here's the vector that returns the derivative of r
+	vector r1,r2,v1,v2;	//we break apart r for easier calculations
+	vector F1,F2;
+	r >> r1 >> r2 >> v1 >> v2;
+
+	F1 = -G*M1*M2/pow((r1-r2).mag(),2)*(r2-r1).uv() - b*v1;          	//linear drag
+	F2 = -G*M1*M2/pow((r1-r2)*(r1-r2))*(r1-r2).uv() - bb*v1.mag()*v1;	//quadratic drag
+	//checkout how easy it is to comput our forces! Easy to error check and easy to write.
+
+	//Now just return drdt;
+	drdt = drdt << v1 << v2 << F1/M1 << F2/M2;
+	// and do return drdt;
+	//or skipping the assignment, we can just do
+	return drdt << v1 << v2 << F1/M1 << F2/M2;
+```
+
+Note that this was relatively simple to write and can be easily extended to N particles!
+Finite element analysis for a 305 project anyone??
+
+### How to initialize the rk10 class
 
 
 ## Backup
