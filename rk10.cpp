@@ -28,6 +28,10 @@ eqm::rk10::rk10(hamilton G,nvector r0){
 		std::cerr <<"Found rk10.bak! Backing up!" << std::endl;
 		isbackup >> t;
 		isbackup >> dt;
+		if(dt == 0){
+			std::cerr << "Warning! dt == 0, setting dt = 0.01\n";
+			dt = 0.01;
+		}
 		//assume data isn't corrupted.
 		for (int i = 0; i < r0.dim(); ++i)
 		{
@@ -98,6 +102,7 @@ eqm::T eqm::rk10::step(eqm::T tf){
 
 		if(scalarerr > errmax && errs != errcounts){
 			dt /= alpha;
+			std::cerr << dt << std::endl;
 			if(errs++ != errcounts)
 				// std::cerr << "dt is: " << dt << std::endl;
 				goto loopstart; //restart at the while loop.

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <stdlib.h>
+#include <cmath>
 #include "vec.h"
 
 //this preprocessor directive checks to see whether our parent source file
@@ -103,7 +104,7 @@ namespace eqm{
 		T time(){return t;};
 		T time(T x){t=x; return t;};
 		T timestep(){return dt;};
-		T timestep(T x){dt = x; return dt;};
+		T timestep(T x){dt = abs(x); if(dt == 0){dt = 0.01;}; return dt;};
 
 		T step();   	//returns the error of the ultimate calculation
 		T step(T t);	//returns the error of the ultimate calculation
