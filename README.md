@@ -2,6 +2,7 @@
 A set of C++ libraries for doing numerical physics!!! It includes
 a vector class, and tenth order (unconfirmed) Runge-Kutta method with adaptive step and
 error checking, and calculation back up!!!
+The paper used for implementing RK10 can be found [here](https://web.archive.org/web/20160821182327/http://sce.uhcl.edu/feagin/courses/rk10.pdf)
 - [Things to note.](#things-to-note)
 - [vec.h](#vech)
 	- [vector](#vector)
