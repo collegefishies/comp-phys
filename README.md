@@ -267,7 +267,8 @@ the current position `nvector`.
 ## Backup
 
 Using backup functionality requires some finesse, which is nothing more than a couple if statements.
-
+However note that the `rk10.bak` will get destroyed at the end of the simulation, so if you would like
+to save data for extension, remove the `remove` statement in the `rk10` deconstructor `~rk10()`.
 ```c++
 using namespace std;
 
@@ -290,6 +291,8 @@ if(!isbackup){  //only set initial time if we're not picking off from previous d
 while(simulation.time() < T){
 	//....
 ```
+
+
 
 ## Changing rk10
 You can make it a twentieth order method (and they *do* exist) if you want! All you need to do is change
