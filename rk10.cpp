@@ -41,16 +41,17 @@ eqm::rk10::rk10(hamilton G,nvector r0,bool wantbackup){
 		std::cerr << "Time is: " << t << std::endl;
 		std::cerr << "dt is: " << dt << std::endl;
 		std::cerr << "r is: " << r << std::endl;
+		isbackup.close();
 	} else {
-		backup.open("rk10.bak");
-		backup << std::setprecision(20);
 		std::cerr << "Created backup file: rk10.bak" << std::endl;
 		r = r0;
 	}
+	backup.open("rk10.bak");
+	backup << std::setprecision(20);
 }
 
 eqm::rk10::~rk10(){
-	std::remove("rk10.bak");
+	// std::remove("rk10.bak");
 }
 
 void eqm::rk10::seterr(eqm::T minerr, eqm::T maxerr){
@@ -97,12 +98,14 @@ eqm::T eqm::rk10::step(eqm::T tf){
 
 		for (int i = 0; i < error.dim(); ++i)
 		{
-			scalarerr = scalarerr > abs(error[i]) ? scalarerr : abs(error[i]);
+			scalarerr = std::max(scalarerr,std::abs(error[i]));
 		}
 
+		// std::cerr << "Error is: " << scalarerr << std::endl;
 		if(scalarerr > errmax && errs != errcounts){
 			dt /= alpha;
-			std::cerr << dt << std::endl;
+			std::cerr << "Error was: " << scalarerr << std::endl;
+			std::cerr << "Setting dt to " << dt << std::endl;
 			if(errs++ != errcounts)
 				// std::cerr << "dt is: " << dt << std::endl;
 				goto loopstart; //restart at the while loop.
