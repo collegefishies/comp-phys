@@ -163,7 +163,7 @@ eqm::T eqm::vector::mag() const{
 }
 
 eqm::vector eqm::vector::uv() const{
-	return (*this)/abs(this->mag());
+	return (*this)/std::abs(this->mag());
 }
 
 //-----------eqm::nvector-------------------

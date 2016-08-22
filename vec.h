@@ -1,6 +1,6 @@
+#include <stdlib.h>  //has exit
 #include <iostream>
 #include <cmath>
-#include <stdlib.h>  //has exit
 
 #ifndef _VEC_H
 #define _VEC_H
