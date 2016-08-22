@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-#define SIMTIME 30
+#define SIMTIME 15
 
 using namespace std;
 using namespace eqm;
@@ -23,7 +23,7 @@ T bb = b*b;
 int main(int argc, char const *argv[])
 {
 	//open up our file to write to
-	fstream file("syrupgalaxies.dat", fstream::out | fstream::app);
+	fstream file("syrupgalaxies.dat", fstream::out | fstream::trunc);
 
 	//some initial positions.
 	vector r1( 1,0,0);
@@ -34,19 +34,17 @@ int main(int argc, char const *argv[])
 	nvector r;
 	r = r << r1 << r2 << v1 << v2; //remember the order.
 
-	rk10 simulation(galaxy, r); 
+	rk10 simulation(galaxy, r,false); 
 
 	// if we don't use .time, or .timestep, we can recover from a backup file.
-	// simulation.time(0);
-	// simulation.timestep(10);
+	simulation.time(0);
+	simulation.timestep(10);
 
-	simulation.seterr(0,1e-10);	
+	simulation.seterr(0,1e-10);
 
 	while( simulation.time() < SIMTIME ){
-		simulation.step(simulation.time() + 0.1); //That way I record numbers at a decently coarse scale.
-
+		simulation.step(simulation.time() + 0.01); //That way I record numbers at a decently coarse scale.
 		simulation.R() >> r1 >> r2 >> v1 >> v2;
-		// cerr << simulation.R() << endl;
 		cout << "Time is " << simulation.time() << endl;
 		file << simulation.time() << ' ' << vector(r1[0], r1[1],r2[0]) << ' ' << r2[1] << endl;
 		// file << simulation.time() << ' ' << 1+(.5*M1*v1*v1 + .5*M2*v2*v2 - 1*G*M1*M2/(r1-r2).mag())/4 << endl;
