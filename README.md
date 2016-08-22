@@ -1,6 +1,6 @@
 # comp-phys
 A set of C++ libraries for doing numerical physics!!! It includes
-a vector class, and tenth order Runge-Kutta method with adaptive step and
+a vector class, and tenth order (unconfirmed) Runge-Kutta method with adaptive step and
 error checking, and calculation back up!!!
 - [Things to note.](#things-to-note)
 - [vec.h](#vech)
