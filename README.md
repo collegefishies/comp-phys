@@ -220,7 +220,7 @@ and our derivatives function ready. Using what we have from the previous section
 ```c++
 
 int main(){
-	eqm::rk10 simulation(galaxy, r);
+	eqm::rk10 simulation(galaxy, r, false); //the false turns off the backup functionality.
 // ...
 ```
 Note that by definition of rk10 constructor, we should really pass `&galaxy`: the *address* 
@@ -265,6 +265,31 @@ for one step.
 To record, the position after it is finished calculating you can call `R()` which returns
 the current position `nvector`. 
 ## Backup
+
+Using backup functionality requires some finesse, which is nothing more than a couple if statements.
+
+```c++
+using namespace std;
+
+ifstream isbackup("rk10.bak");	//attempt to open the .bak file
+fstream  datafile("some.dat")
+if(!isbackup){
+	datafile.open(fstream::out | fstream::trunc);
+} else {
+	datafile.open(fstream::out | fstream::app);	//append if there is existing data
+}
+
+rk10 simulation(F,r0);
+simulation.seterr(0,1e-6);
+
+if(!isbackup){  //only set initial time if we're not picking off from previous data.
+	simulation.time(0);
+	simulation.timestep(0.001);
+}
+
+while(simulation.time() < T){
+	//....
+```
 
 ## Changing rk10
 You can make it a twentieth order method (and they *do* exist) if you want! All you need to do is change
